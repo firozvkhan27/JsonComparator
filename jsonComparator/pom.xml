@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.json</groupId>
-	<artifactId>jsonComparator</artifactId>
+	<artifactId>json_comparator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>jsonComparator</name>
+	<name>json_comparator</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
