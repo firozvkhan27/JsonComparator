@@ -1,9 +1,7 @@
 package com.json.jsonComparator.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-
-import javax.websocket.server.PathParam;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +19,7 @@ import com.json.jsonComparator.service.JsonService;
 @RequestMapping(value="/api/v1/json")
 public class JsonController {
 	@Autowired
-	JsonService js ;
+	private JsonService js ;
 	@RequestMapping(method=RequestMethod.POST)
 	public boolean save(@RequestBody InputData data) {
 		js.saveData(data);
@@ -29,7 +27,7 @@ public class JsonController {
 	}
 	
 	@RequestMapping(value="compare-json",method=RequestMethod.POST)
-	public HashMap<String, String> compareJson(@RequestBody InputData data) throws JsonParseException, JsonMappingException, IOException {
+	public Map<String, Object> compareJson(@RequestBody InputData data) throws JsonParseException, JsonMappingException, IOException {
 		return js.compare(data);
 	}
 	
