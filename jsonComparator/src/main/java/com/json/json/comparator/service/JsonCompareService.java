@@ -1,4 +1,4 @@
-package com.json.jsonComparator.service;
+package com.json.json.comparator.service;
 
 
 
@@ -19,49 +19,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
-import com.json.jsonComparator.dto.JsonData;
-import com.json.jsonComparator.jparepo.JpaCurdRepo;
-import com.json.jsonComparator.model.InputData;
+import com.json.json.comparator.dto.JsonData;
+import com.json.json.comparator.jparepo.JpaCurdRepo;
+import com.json.json.comparator.model.InputData;
 
 @Service
-public class JsonService {
+public class JsonCompareService {
 
 	@Autowired
-	JpaCurdRepo jp;
+	private JpaCurdRepo jpaCurdRepo;
 	public void saveData(InputData in) {
 		JsonData js = new JsonData();
 		js.setJsonData(in.getInputJson().toString());
-		jp.save(js);
+		jpaCurdRepo.save(js);
 	}
 
-	/*public HashMap<String, String> compare(InputData data) throws JsonParseException, JsonMappingException, IOException {
-		Optional<JsonData> findById = jp.findById(data.getBaseJsonID());
-		JsonData jsonData = findById.get();
-		String jsonData2 = jsonData.getJsonData();
-		
-		JSONObject js1 = new JSONObject(jsonData2.toString().replace("=", ":"));
-		JSONObject js2 = new JSONObject(data.getInputJson().toString().replace("=", ":"));
-		ObjectMapper mapper = new ObjectMapper();
-		TypeReference<HashMap<String, Object>> type = new TypeReference<HashMap<String, Object>>() {};
-		Map<String, Object> leftMap = mapper.readValue(js1.toString(), type);
-		Map<String, Object> rightMap = mapper.readValue(js2.toString(), type);
-		Map<String, Object> leftFlatMap = FlatMapUtil.flatten(leftMap);
-		Map<String, Object> rightFlatMap = FlatMapUtil.flatten(rightMap);
-		MapDifference<String, Object> difference1 = Maps.difference(leftFlatMap, rightFlatMap);
-		HashMap<String , String> hm = new HashMap<>();
-		hm.put("Left Side different entries ", difference1.entriesOnlyOnLeft().toString());
-		
-		String strin = "";
-		hm.put("Right Side different entries ", difference1.entriesOnlyOnRight().toString());
-		hm.put("Both Side different values ", difference1.entriesDiffering().toString());
-		return hm;
-	}
-
-	public void deleteDateById(int id) {
-		jp.deleteById(id);
-	}*/
 	public Map<String, Object> compare(InputData data) throws JsonParseException, JsonMappingException, IOException {
-		Optional<JsonData> findById = jp.findById(data.getBaseJsonID());
+		Optional<JsonData> findById = jpaCurdRepo.findById(data.getBaseJsonID());
 		JsonData jsonData = findById.get();
 		String jsonData2 = jsonData.getJsonData();
 		
@@ -115,7 +89,7 @@ public class JsonService {
 			}
 
 	public void deleteDateById(int id) {
-		jp.deleteById(id);
+		jpaCurdRepo.deleteById(id);
 	}
 	
 	
@@ -190,7 +164,7 @@ public class JsonService {
 
 	
 	public static Object  createJson(Object object, String str) {
-		Object j =null;
+		Object element =null;
 		if(object instanceof JSONObject){
 			JSONObject jsonObj =(JSONObject) object;
 	    for (Object key : jsonObj.keySet()) {
@@ -202,30 +176,29 @@ public class JsonService {
 	        //for nested objects iteration if required
 	        if (keyvalue instanceof JSONObject){
 	        		if(str.trim().equalsIgnoreCase(keyStr.trim())){
-		        	j=(JSONObject) keyvalue;
+		        	element=(JSONObject) keyvalue;
 		        	return (JSONObject) keyvalue;
 	        	 }
-	        	j=  createJson((JSONObject)keyvalue ,str);
+	        	element=  createJson((JSONObject)keyvalue ,str);
 	        }
 	        if (keyvalue instanceof JSONArray){
         		if(str.trim().equalsIgnoreCase(keyStr.trim())){
-	        	j=(JSONArray) keyvalue;
+	        	element=(JSONArray) keyvalue;
 	        	return (JSONArray) keyvalue;
         	 }else{
         		 
         	 }
-        	j =    createJson(keyvalue ,str);
+        	element =    createJson(keyvalue ,str);
         }}
 	        
 	    }if(object instanceof JSONArray){
 	    	JSONArray jsonArray = (JSONArray)object;
-	    	System.out.println();
 	    }
-		return j;
+		return element;
 	}
 	
 	public static JSONArray  getJsonArray(JSONObject jsonObj, String str) {
-		JSONArray j =null;
+		JSONArray element =null;
 	    for (Object key : jsonObj.keySet()) {
 	        //based on you key types
 	        String keyStr = (String)key;
@@ -235,14 +208,14 @@ public class JsonService {
 	        //for nested objects iteration if required
 	        if (keyvalue instanceof JSONArray){
 	        		if(str.trim().equalsIgnoreCase(keyStr.trim())){
-		        	j=(JSONArray) keyvalue;
+		        	element=(JSONArray) keyvalue;
 		        	return (JSONArray) keyvalue;
 	        	 }
-	        	j=   getJsonArray((JSONObject)keyvalue ,str);
+	        	element=   getJsonArray((JSONObject)keyvalue ,str);
 	        }
 	        
 	    }
-		return j;
+		return element;
 	}
 	
 	}

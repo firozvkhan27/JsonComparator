@@ -1,4 +1,4 @@
-package com.json.jsonComparator.dto;
+package com.json.json.comparator.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

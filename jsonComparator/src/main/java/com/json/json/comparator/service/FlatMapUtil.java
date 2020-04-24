@@ -1,4 +1,4 @@
-package com.json.jsonComparator.service;
+package com.json.json.comparator.service;
 
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;

@@ -1,4 +1,4 @@
-package com.json.jsonComparator;
+package com.json.json.comparator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

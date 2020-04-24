@@ -1,4 +1,4 @@
-package com.json.jsonComparator.model;
+package com.json.json.comparator.model;
 
 public class InputData {
 

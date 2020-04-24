@@ -1,7 +1,6 @@
-package com.json.jsonComparator.controller;
+package com.json.json.comparator.controller;
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,28 +11,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.json.jsonComparator.model.InputData;
-import com.json.jsonComparator.service.JsonService;
+import com.json.json.comparator.model.InputData;
+import com.json.json.comparator.service.JsonCompareService;
 
 @RestController
 @RequestMapping(value="/api/v1/json")
 public class JsonController {
 	@Autowired
-	private JsonService js ;
+	private JsonCompareService jsonCompare ;
 	@RequestMapping(method=RequestMethod.POST)
 	public boolean save(@RequestBody InputData data) {
-		js.saveData(data);
+		jsonCompare.saveData(data);
 		return true;
 	}
-	
-	@RequestMapping(value="compare-json",method=RequestMethod.POST)
-	public Map<String, Object> compareJson(@RequestBody InputData data) throws JsonParseException, JsonMappingException, IOException {
-		return js.compare(data);
-	}
-	
+		
 	@RequestMapping(method=RequestMethod.DELETE)
 	public boolean deleteData(@RequestParam("id") int id) throws JsonParseException, JsonMappingException, IOException {
-		js.deleteDateById(id);
+		jsonCompare.deleteDateById(id);
 		return true;
 	}
 	
