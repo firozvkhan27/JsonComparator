@@ -1,4 +1,4 @@
-package com.json.json.comparator.controller;
+package com.json.comparator.controller;
 
 import java.io.IOException;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.json.json.comparator.model.InputData;
-import com.json.json.comparator.service.JsonCompareService;
+import com.json.comparator.model.InputData;
+import com.json.comparator.service.JsonCompareService;
 
 @RestController
 @RequestMapping(value="/api/v1/json")

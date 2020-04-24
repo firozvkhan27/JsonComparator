@@ -1,4 +1,4 @@
-package com.json.json.comparator.service;
+package com.json.comparator.service;
 
 
 
@@ -19,9 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
-import com.json.json.comparator.dto.JsonData;
-import com.json.json.comparator.jparepo.JpaCurdRepo;
-import com.json.json.comparator.model.InputData;
+import com.json.comparator.dto.JsonData;
+import com.json.comparator.jparepo.JpaCurdRepo;
+import com.json.comparator.model.InputData;
 
 @Service
 public class JsonCompareService {
