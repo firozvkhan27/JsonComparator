@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.json.comparator.exceptions.JsonComparatorExceptions;
 import com.json.comparator.model.InputData;
 import com.json.comparator.service.JsonCompareService;
 
@@ -22,7 +23,7 @@ public class JsonController {
 	@Autowired
 	private JsonCompareService jsonCompare ;
 	@PostMapping()
-	public boolean save(@RequestBody InputData data) {
+	public boolean save(@RequestBody InputData data) throws JsonComparatorExceptions {
 		jsonCompare.saveData(data);
 		return true;
 	}

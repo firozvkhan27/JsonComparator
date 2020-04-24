@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.json.comparator.exceptions.JsonComparatorExceptions;
 import com.json.comparator.model.InputData;
 import com.json.comparator.service.JsonCompareService;
 
@@ -21,7 +20,7 @@ public class JsonComapareController {
 	private JsonCompareService jsonCompare ;
 	
 	@PostMapping(value="jsons")
-	public Map<String, Object> compareJson(@RequestBody InputData inputData) throws JsonParseException, JsonMappingException, IOException {
+	public Map<String, Object> compareJson(@RequestBody InputData inputData) throws IOException, JsonComparatorExceptions {
 		return jsonCompare.compare(inputData);
 	}
 

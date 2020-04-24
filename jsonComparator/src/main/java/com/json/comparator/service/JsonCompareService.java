@@ -20,6 +20,8 @@ import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
 import com.json.comparator.dto.JsonData;
+import com.json.comparator.exceptions.JsonComparatorExceptions;
+import com.json.comparator.exceptions.JsonNotFound;
 import com.json.comparator.jparepo.JpaCurdRepo;
 import com.json.comparator.model.InputData;
 
@@ -28,13 +30,18 @@ public class JsonCompareService {
 
 	@Autowired
 	private JpaCurdRepo jpaCurdRepo;
-	public void saveData(InputData in) {
+	public void saveData(InputData in) throws JsonComparatorExceptions {
+		try{
 		JsonData js = new JsonData();
 		js.setJsonData(in.getInputJson().toString());
 		jpaCurdRepo.save(js);
+		}catch(Exception e){
+			throw new JsonComparatorExceptions("Unable to save");
+		}
 	}
 
-	public Map<String, Object> compare(InputData data) throws  IOException {
+	public Map<String, Object> compare(InputData data) throws  IOException, JsonComparatorExceptions {
+		try{
 		Optional<JsonData> findById = jpaCurdRepo.findById(data.getBaseJsonID());
 		JsonData jsonData = findById.isPresent()? findById.get(): null;
 		String jsonData2 = null;
@@ -87,11 +94,18 @@ public class JsonCompareService {
 			result.put("Left", left.toMap());
 			result.put("Both", both.toMap());
 			result.put("Right", parent.toMap());
-			return result;	
+			return result;
+		}catch (Exception e){
+			throw new JsonComparatorExceptions("something went wrong");
+		}
 			}
 
-	public void deleteDateById(int id) {
+	public void deleteDateById(int id) throws JsonNotFound {
+		try{
 		jpaCurdRepo.deleteById(id);
+		}catch(Exception e){
+			throw new JsonNotFound("not found");
+		}
 	}
 	
 	
