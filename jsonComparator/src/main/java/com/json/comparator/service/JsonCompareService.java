@@ -34,12 +34,14 @@ public class JsonCompareService {
 		jpaCurdRepo.save(js);
 	}
 
-	public Map<String, Object> compare(InputData data) throws JsonParseException, JsonMappingException, IOException {
+	public Map<String, Object> compare(InputData data) throws  IOException {
 		Optional<JsonData> findById = jpaCurdRepo.findById(data.getBaseJsonID());
-		JsonData jsonData = findById.get();
-		String jsonData2 = jsonData.getJsonData();
+		JsonData jsonData = findById.isPresent()? findById.get(): null;
+		String jsonData2 = null;
+		if(null !=  jsonData)
+		 jsonData2 = jsonData.getJsonData();
 		
-		JSONObject js1 = new JSONObject(jsonData2.toString().replace("=", ":"));
+		JSONObject js1 = new JSONObject(jsonData2.replace("=", ":"));
 		JSONObject js2 = new JSONObject(data.getInputJson().toString().replace("=", ":"));
 		ObjectMapper mapper = new ObjectMapper();
 		TypeReference<HashMap<String, Object>> type = new TypeReference<HashMap<String, Object>>() {};
@@ -51,7 +53,7 @@ public class JsonCompareService {
 		Map<String, Object> entriesOnlyOnRight = difference1.entriesOnlyOnRight();
 		Map<String, Object> entriesOnlyOnLeft = difference1.entriesOnlyOnLeft();
 		Map<String, ValueDifference<Object>> entriesDiffering = difference1.entriesDiffering();
-		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<>();
 		
 			JSONObject parent  = new JSONObject();
 			entriesOnlyOnRight.forEach((k,v)->{
@@ -113,7 +115,6 @@ public class JsonCompareService {
 						child = new JSONObject();
 						child.put(str[i], childmap);
 					}
-					System.out.println();
 				}catch(Exception e){
 					
 				}
@@ -125,8 +126,6 @@ public class JsonCompareService {
 					
 					map.putAll(child.toMap());
 					parent.put(str[i], map);
-					System.out.println();
-
 				}else{
 					parent.put(str[i], child);
 				}
@@ -150,7 +149,7 @@ public class JsonCompareService {
 						}
 						}else {
 							parent.put(str[i], child);
-						}	// TODO: handle exception
+							}
 					}
 					
 					
@@ -208,7 +207,6 @@ public class JsonCompareService {
 	        //for nested objects iteration if required
 	        if (keyvalue instanceof JSONArray){
 	        		if(str.trim().equalsIgnoreCase(keyStr.trim())){
-		        	element=(JSONArray) keyvalue;
 		        	return (JSONArray) keyvalue;
 	        	 }
 	        	element=   getJsonArray((JSONObject)keyvalue ,str);

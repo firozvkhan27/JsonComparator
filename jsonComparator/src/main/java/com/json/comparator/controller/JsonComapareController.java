@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -20,7 +20,7 @@ public class JsonComapareController {
 	@Autowired
 	private JsonCompareService jsonCompare ;
 	
-	@RequestMapping(value="jsons",method=RequestMethod.POST)
+	@PostMapping(value="jsons")
 	public Map<String, Object> compareJson(@RequestBody InputData inputData) throws JsonParseException, JsonMappingException, IOException {
 		return jsonCompare.compare(inputData);
 	}
