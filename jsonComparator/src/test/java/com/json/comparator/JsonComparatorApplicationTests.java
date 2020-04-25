@@ -1,4 +1,4 @@
-package com.json.jsonComparator;
+package com.json.comparator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
