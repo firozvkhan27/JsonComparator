@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -216,6 +217,25 @@ public class JsonCompareService {
 	        
 	    }
 		return element;
+	}
+
+	public JsonDomain getJsonInfo(int basejJsonId) throws JsonNotFound {
+		JsonDomain jsonDomain = null;
+		Optional<JsonDomain> findById = jpaCurdRepo.findById(basejJsonId);
+		try {
+			if (findById.isPresent()) {
+				jsonDomain = findById.get();
+				JSONObject js1 = new JSONObject(jsonDomain.getJsonData().toString().replace("=", ":"));
+				jsonDomain.setJsonData(js1.toString());
+			} else {
+				throw new JsonNotFound("No data available with ID  -"
+						+ basejJsonId);
+			}
+		} catch (Exception e) {
+			throw new JsonNotFound("No data available with ID  -" + basejJsonId);
+		}
+		return jsonDomain;
+		
 	}
 	
 	}

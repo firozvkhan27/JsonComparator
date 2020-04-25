@@ -19,7 +19,7 @@ public class JsonExceptionController {
 
 	@ExceptionHandler(value = JsonNotFound.class)
 	public ResponseEntity<Object> exceptioNot(JsonNotFound exception) {
-		return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>( exception.getMessage(), HttpStatus.NOT_FOUND);
 	}
 	
 	
