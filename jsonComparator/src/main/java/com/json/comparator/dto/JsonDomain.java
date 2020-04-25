@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "JSON_DB")
 @SequenceGenerator(name="seq", initialValue=1, allocationSize=100)
-public class JsonData {
+public class JsonDomain {
 	@Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	private int id;

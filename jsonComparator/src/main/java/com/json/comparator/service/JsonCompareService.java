@@ -12,14 +12,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
 import com.google.common.collect.Maps;
-import com.json.comparator.dto.JsonData;
+import com.json.comparator.dto.JsonDomain;
 import com.json.comparator.exceptions.JsonComparatorExceptions;
 import com.json.comparator.exceptions.JsonNotFound;
 import com.json.comparator.jparepo.JpaCurdRepo;
@@ -32,7 +30,7 @@ public class JsonCompareService {
 	private JpaCurdRepo jpaCurdRepo;
 	public void saveData(InputData in) throws JsonComparatorExceptions {
 		try{
-		JsonData js = new JsonData();
+		JsonDomain js = new JsonDomain();
 		js.setJsonData(in.getInputJson().toString());
 		jpaCurdRepo.save(js);
 		}catch(Exception e){
@@ -42,8 +40,8 @@ public class JsonCompareService {
 
 	public Map<String, Object> compare(InputData data) throws  IOException, JsonComparatorExceptions {
 		try{
-		Optional<JsonData> findById = jpaCurdRepo.findById(data.getBaseJsonID());
-		JsonData jsonData = findById.isPresent()? findById.get(): null;
+		Optional<JsonDomain> findById = jpaCurdRepo.findById(data.getBaseJsonID());
+		JsonDomain jsonData = findById.isPresent()? findById.get(): null;
 		String jsonData2 = null;
 		if(null !=  jsonData)
 		 jsonData2 = jsonData.getJsonData();
@@ -59,7 +57,7 @@ public class JsonCompareService {
 		MapDifference<String, Object> difference1 = Maps.difference(leftFlatMap, rightFlatMap);
 		Map<String, Object> entriesOnlyOnRight = difference1.entriesOnlyOnRight();
 		Map<String, Object> entriesOnlyOnLeft = difference1.entriesOnlyOnLeft();
-		Map<String, ValueDifference<Object>> entriesDiffering = difference1.entriesDiffering();
+	
 		Map<String, Object> result = new HashMap<>();
 		
 			JSONObject parent  = new JSONObject();
@@ -82,17 +80,7 @@ public class JsonCompareService {
 				
 			});
 			
-			JSONObject both  = new JSONObject();
-			entriesDiffering.forEach((k,v)->{
-				String[] keySplits = k.substring(1).split("/");
-				 getJson(keySplits,v,both);
-				 if(!k.substring(1).contains("/")){
-					 parent.put(k.substring(1), v);
-				 }
-				
-			});
 			result.put("Left", left.toMap());
-			result.put("Both", both.toMap());
 			result.put("Right", parent.toMap());
 			return result;
 		}catch (Exception e){
@@ -129,7 +117,7 @@ public class JsonCompareService {
 						child = new JSONObject();
 						child.put(str[i], childmap);
 					}
-				}catch(Exception e){
+				}catch(Exception e) {
 					
 				}
 				i=i-1;
